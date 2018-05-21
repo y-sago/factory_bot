@@ -11,27 +11,11 @@ before_install:
 install: "bundle install --jobs 8"
 script: "bundle exec rake"
 gemfile:
-  - gemfiles/3.2.gemfile
-  - gemfiles/4.0.gemfile
-  - gemfiles/4.1.gemfile
-  - gemfiles/4.2.gemfile
   - gemfiles/5.0.gemfile
   - gemfiles/5.1.gemfile
+  - gemfiles/5.2.gemfile
 matrix:
   fast_finish: true
-  exclude:
-    - rvm: 2.4.4
-      gemfile: gemfiles/3.2.gemfile
-    - rvm: 2.4.4
-      gemfile: gemfiles/4.0.gemfile
-    - rvm: 2.4.4
-      gemfile: gemfiles/4.1.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/3.2.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/4.0.gemfile
-    - rvm: ruby-head
-      gemfile: gemfiles/4.1.gemfile
   allow_failures:
     - rvm: ruby-head
     - rvm: rbx-2
