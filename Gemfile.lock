@@ -52,7 +52,7 @@ GEM
     minitest (5.11.3)
     multi_json (1.13.1)
     multi_test (0.1.2)
-    rake (12.1.0)
+    rake (12.3.1)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
