@@ -177,6 +177,6 @@ describe "modifying factories" do
       FactoryBot.modify do
         factory :unknown_factory
       end
-    }.to raise_error(ArgumentError)
+    }.to raise_error(KeyError)
   end
 end
