@@ -1,22 +1,6 @@
 require "active_support/core_ext/hash/indifferent_access"
 
 module FactoryBot
-  # In Ruby <= 2.5 it is necessary to monkey patch
-  # the key error class because it does not expose
-  # receiver and key attributes.
-  # See https://bugs.ruby-lang.org/issues/14313
-  module KeyErrorExtension
-    attr_accessor :receiver, :key
-
-    def initialize(msg, key: nil, receiver: nil)
-      @key = key
-      @receiver = receiver
-      super msg
-    end
-  end
-
-  KeyError.prepend KeyErrorExtension
-
   class Registry
     include Enumerable
 
@@ -36,11 +20,7 @@ module FactoryBot
     end
 
     def find(name)
-      if registered?(name)
-        @items[name]
-      else
-        raise KeyError.new("#{@name} not registered: #{name}", receiver: @items, key: name)
-      end
+      with_custom_key_error { @items.fetch(name) }
     end
 
     alias :[] :find
@@ -51,6 +31,17 @@ module FactoryBot
 
     def registered?(name)
       @items.key?(name)
+    end
+
+    private
+
+    def with_custom_key_error
+      yield
+    rescue KeyError => e
+      message = e.message.sub("key not found", "#{@name} not registered")
+      error = KeyError.new(message)
+      error.set_backtrace(e.backtrace)
+      raise error
     end
   end
 end
